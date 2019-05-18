@@ -6,7 +6,7 @@ const LikeSchema = new mongoose.Schema({
     required: true
   },
   likes: {
-    type: String,
+    type: Number,
     required: true
   },
   IPs: [String]

@@ -34,71 +34,49 @@ module.exports = function(app) {
       .get(API(symbol))
       .then(res => res.data)
       .catch(err => null);
-
     // Check if stockPrice is available
     if (!stockPrice) {
       return res.json({ msg: 'Not a valid symbol' });
     } else {
-      Like.findOne({ symbol: symbol })
-        .then(stock => {
-          // if stock already exists
-          if (stock) {
-            let { IPs } = stock;
-
-            // If ip already exists along with the symbol
-            if (!IPs.includes(IP)) {
-              Like.findOneAndUpdate(
-                { symbol: symbol },
-                {},
-                {
-                  $inc: {
-                    likes: like ? 1 : 0
-                  }
-                },
-                {
-                  $push: {
-                    IPs: IP
-                  }
-                },
-                { new: true },
-                (err, doc) => {
-                  if (err) {
-                    return res.json({ msg: 'error' });
-                  }
-                  return res.json({
-                    Price: stockPrice,
-                    Symbol: symbol.toUpperCase(),
-                    Likes: doc.likes
-                  });
-                }
-              );
-            } else {
-              return res.json({
+      let stock = await Like.findOne({ symbol: symbol })
+        .then(symbol => symbol)
+        .catch(err => null);
+      // if stock already exists
+      if (stock) {
+        try {
+          Like.findOneAndUpdate(
+            { symbol: symbol },
+            {
+              $inc: { likes: like ? 1 : 0 },
+              $push: { IPs: IP }
+            },
+            { upsert: true, new: true }
+          ).then(stock => {
+            if (stock) {
+              return res.status(200).json({
                 Price: stockPrice,
                 Symbol: symbol.toUpperCase(),
                 Likes: stock.likes
               });
             }
-          } else {
-            let newLike = new Like({
-              symbol,
-              likes: like ? 1 : 0,
-              IPs: IP
-            });
-            newLike.save();
-            return res.json({
-              Price: stockPrice,
-              Symbol: symbol.toUpperCase(),
-              Likes: like ? 1 : 0
-            });
-          }
-        })
-        .catch(err => {
-          if (err) {
-            console.log(err);
-            res.json({ msg: 'err' });
-          }
+            res.status(200).json({ msg: 'error' });
+          });
+        } catch (error) {
+          res.status(401).json({ msg: 'err' });
+        }
+      } else {
+        let newLike = new Like({
+          symbol,
+          likes: like ? 1 : 0,
+          IPs: IP
         });
+        newLike.save();
+        return res.json({
+          Price: stockPrice,
+          Symbol: symbol.toUpperCase(),
+          Likes: like ? 1 : 0
+        });
+      }
     }
   });
 

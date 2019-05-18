@@ -18,6 +18,7 @@ document.getElementById('single-stock').addEventListener('submit', e => {
     })
       .then(res => res.json())
       .then(data => {
+        console.log('data', data);
         if (data.msg) {
           output.textContent = data.msg;
         } else {
