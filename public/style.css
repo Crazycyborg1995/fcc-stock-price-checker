@@ -1,0 +1,11 @@
+#output-div {
+  position: relative;
+}
+#close-btn {
+  position: absolute;
+  top: -2px;
+  right: 6px;
+  font-size: 2rem;
+  color: #777;
+  cursor: pointer;
+}

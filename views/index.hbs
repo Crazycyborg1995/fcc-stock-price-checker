@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Stock Price Checker</title>
+  <meta name="description" content="Stock Price Checker">
+  <link id="favicon" rel="icon" href="https://hyperdev.com/favicon-app.ico" type="image/x-icon">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./public/bootstrap.min.css">
+  <link rel="stylesheet" href="./public/style.css">
+</head>
+
+<body>
+  <div class="container my-4">
+    <h1 class="text-center">Stock Price Checker</h1>
+    <div class="row mt-5">
+      <div class="col-12 col-lg-6">
+        <div class="card bg-success mb-3">
+          <h4 class="card-header text-white text-center">GET STOCK PRICE</h4>
+          <div class="card-body bg-white p-4">
+            <form class="form" id="single-stock" method="get" action="/api/single-stock">
+              <div class="input-group-append">
+                <input class="form-control" id="single-input" type="text" aria-label="Checkbox"
+                  placeholder="Type a stock (e.g. GOOG, MSFT, FB, etc)" required="required">
+                <div class="input-group-text"><span>Like? &nbsp;</span>
+                  <input id="single-like" type="checkbox" aria-label="Like this stock">
+                </div>
+              </div>
+              <button class="btn btn-outline-success w-100 mt-4" id="single-btn" type="submit">Search</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-6">
+        <div class="card bg-success mb-3">
+          <h4 class="card-header text-white text-center">COMPARE STOCK PRICES</h4>
+          <div class="card-body bg-white p-4">
+            <form class="form" id="compare-stock" method="get" action="/api/compare-stock">
+              <div class="input-group-append"><input class="form-control" id="multi-input1" type="text"
+                  aria-label="Checkbox" placeholder="Type a stock (e.g. GOOG, MSFT, FB, etc)" required="required"><input
+                  class="form-control" id="multi-input2" type="text" aria-label="Checkbox"
+                  placeholder="Type a stock (e.g. GOOG, MSFT, FB, etc)" required="required">
+                <div class="input-group-text"><span>Like both? &nbsp;</span><input id="multi-like" type="checkbox"
+                    aria-label="Like both these stocks">
+                </div>
+              </div>
+              <button class="btn btn-outline-success w-100 mt-4" id="multi-btn" type="submit">Compare</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card my-4" id="output-div">
+      <h3 class="card-body text-center text-success" id="output">
+      </h3>
+      <span id="close-btn">&times;</span>
+    </div>
+  </div>
+  <script src="./public/index.js"></script>
+</body>
+
+</html>
